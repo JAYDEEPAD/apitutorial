@@ -1,9 +1,11 @@
-import 'package:apitutorial/class_screen.dart';
-import 'package:apitutorial/home_screen.dart';
-import 'package:apitutorial/loginapi.dart';
-import 'package:apitutorial/nestedapi_screen.dart';
-import 'package:apitutorial/signupapi.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:apitutorial/state/cart_state.dart';
+import 'package:apitutorial/screens/home.dart';
+import 'package:apitutorial/screens/fruit_detail.dart';
+import 'package:apitutorial/screens/cart.dart';
+import 'package:apitutorial/screens/checkout.dart';
+import 'package:apitutorial/screens/orders.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,25 +14,38 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
+    return ChangeNotifierProvider(
+      create: (_) => CartState(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Fruit Delivery',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+          useMaterial3: true,
+        ),
+        initialRoute: '/',
+        routes: {
+          '/': (_) => const HomeScreenFruits(),
+          '/detail': (_) => const FruitDetailScreen(),
+          '/cart': (_) => const CartScreen(),
+          '/checkout': (_) => const CheckoutScreen(),
+          '/orders': (_) => const OrdersScreen(),
+          '/profile': (_) => const _ProfilePlaceholder(),
+        },
       ),
-      home: const LoginScreen(),
+    );
+  }
+}
+
+class _ProfilePlaceholder extends StatelessWidget {
+  const _ProfilePlaceholder();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(child: Text('Profile coming soon')),
     );
   }
 }
